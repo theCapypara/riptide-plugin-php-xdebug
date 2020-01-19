@@ -28,8 +28,8 @@
 
 |build| |docs| |pypi-version| |pypi-downloads| |pypi-license| |pypi-pyversions| |slack|
 
-.. |build| image:: https://jenkins.riptide.parakoopa.de/buildStatus/icon?job=riptide-cli%2Fmaster
-    :target: https://jenkins.riptide.parakoopa.de/blue/organizations/jenkins/riptide-cli/activity
+.. |build| image:: https://jenkins.riptide.parakoopa.de/buildStatus/icon?job=riptide-plugin-php-xdebug%2Fmaster
+    :target: https://jenkins.riptide.parakoopa.de/blue/organizations/jenkins/riptide-plugin-php-xdebug/activity
     :alt: Build Status
 
 .. |docs| image:: https://readthedocs.org/projects/riptide-docs/badge/?version=latest
@@ -40,18 +40,18 @@
     :target: https://slack.riptide.parakoopa.de
     :alt: Join our Slack workspace
 
-.. |pypi-version| image:: https://img.shields.io/pypi/v/riptide-cli
-    :target: https://pypi.org/project/riptide-cli/
+.. |pypi-version| image:: https://img.shields.io/pypi/v/riptide-plugin-php-xdebug
+    :target: https://pypi.org/project/riptide-plugin-php-xdebug/
     :alt: Version
 
-.. |pypi-downloads| image:: https://img.shields.io/pypi/dm/riptide-cli
-    :target: https://pypi.org/project/riptide-cli/
+.. |pypi-downloads| image:: https://img.shields.io/pypi/dm/riptide-plugin-php-xdebug
+    :target: https://pypi.org/project/riptide-plugin-php-xdebug/
     :alt: Downloads
 
-.. |pypi-license| image:: https://img.shields.io/pypi/l/riptide-cli
+.. |pypi-license| image:: https://img.shields.io/pypi/l/riptide-plugin-php-xdebug
     :alt: License (MIT)
 
-.. |pypi-pyversions| image:: https://img.shields.io/pypi/pyversions/riptide-cli
+.. |pypi-pyversions| image:: https://img.shields.io/pypi/pyversions/riptide-plugin-php-xdebug
     :alt: Supported Python versions
 
 Riptide is a set of tools to manage development environments for web applications.
@@ -63,14 +63,19 @@ Riptide abstracts the virtualization in such a way that the environment behaves 
 as if you were running it natively, without the need to install any other requirements
 the project may have.
 
-CLI Application
----------------
+Plugin: PHP Xdebug
+------------------
 
-This repository contains the CLI application for Riptide. The library used for the CLI is `Click <https://click.palletsprojects.com/en/7.x/>`_.
+This plugin allows users to toggle the use of Xdebug for PHP based services or commands.
 
-The CLI application uses the Riptide lib package to manage files and to communicate with the container engine backend.
+Usage via CLI:
 
-It can be installed via pip by installing ``riptide-cli``.
+.. code::
+
+   riptide xdebug [on/off]
+
+Sets the flag ``php-xdebug.enabled``, which can be read from Riptide configuration files to
+enable or disable Xdebug.
 
 Documentation
 -------------
