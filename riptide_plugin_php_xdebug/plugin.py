@@ -62,6 +62,10 @@ class PhpXdebugPlugin(AbstractPlugin):
                     if self.engine.service_status(ctx.system_config["project"], s['$name'])
                 ]
                 if len(php_services) > 0 and self.engine:
+                    # Reload the configuration before restarting, to make sure that the
+                    # Opcache directory settings and maybe other settings affected by the flag are also properly set
+                    ctx.loaded = False
+                    load_riptide_core(ctx)
                     await stop_project(ctx, php_services, show_status=False)
                     await start_project(ctx, php_services, show_status=False, quick=True)
 
