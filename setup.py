@@ -9,7 +9,7 @@ with open(path.join(this_directory, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='riptide-plugin-php-xdebug',
-    version='0.5.0rc2',
+    version='0.5.0',
     packages=find_packages(),
     description='Tool to manage development environments for web applications using containers - PHP Xdebug integration',
     long_description=long_description,
@@ -18,8 +18,8 @@ setup(
     author='Marco "Parakoopa" Köpcke',
     license='MIT',
     install_requires=[
-        'riptide-lib >= 0.5rc1, < 0.6',
-        'riptide-cli >= 0.5rc1, < 0.6',
+        'riptide-lib >= 0.5, < 0.6',
+        'riptide-cli >= 0.5, < 0.6',
         'Click >= 7.0',
     ],
     classifiers=[
