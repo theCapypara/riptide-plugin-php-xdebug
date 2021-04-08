@@ -1,3 +1,4 @@
+__version__ = '0.5.0'
 from setuptools import setup, find_packages
 
 # README read-in
@@ -9,7 +10,7 @@ with open(path.join(this_directory, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='riptide-plugin-php-xdebug',
-    version='0.5.0',
+    version=__version__,
     packages=find_packages(),
     description='Tool to manage development environments for web applications using containers - PHP Xdebug integration',
     long_description=long_description,
@@ -30,6 +31,7 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
     ],
     entry_points='''
         [riptide.plugin]
