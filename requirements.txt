@@ -1,3 +1,3 @@
 Click==7.0
-riptide-lib >= 0.5, < 0.6
-riptide-cli >= 0.5, < 0.6
+riptide-lib >= 0.6, < 0.7
+riptide-cli >= 0.6, < 0.7
