@@ -151,8 +151,9 @@ class PhpXdebugPlugin(AbstractPlugin):
     def get_state(self, project: 'Project') -> Dict:
         if not os.path.exists(self._get_configuration_path(project)):
             s = {ENABLED_FLAG_NAME: False}
-        with open(self._get_configuration_path(project), 'r') as fp:
-            s = json.load(fp)
+        else:
+            with open(self._get_configuration_path(project), 'r') as fp:
+                s = json.load(fp)
         # For backwards compatibility we check these extra:
         if MODE_FLAG_NAME not in s:
             s[MODE_FLAG_NAME] = 'debug'
