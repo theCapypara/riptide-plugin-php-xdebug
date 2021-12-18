@@ -138,12 +138,12 @@ class PhpXdebugPlugin(AbstractPlugin):
         pass
 
     def get_flag_value(self, config: 'Config', flag_name: str) -> any:
-        if "project" not in config:
+        if not config.internal_contains("project"):
             return False
         if flag_name == XDEBUG3_FLAG_NAME:
             return self.get_xdebug_version(config) == '3'
         else:
-            state = self.get_state(config["project"])
+            state = self.get_state(config.internal_get("project"))
             if flag_name in state:
                 return state[flag_name]
         return False
@@ -187,14 +187,15 @@ class PhpXdebugPlugin(AbstractPlugin):
         # 1. In env:
         if VERSION_ENV in os.environ and os.environ[VERSION_ENV] in VERSION_VALID:
             return os.environ[VERSION_ENV]
+        proj = config.internal_get('project')
         # 2. In label of image of service with role 'php':
-        svc = config['project']['app'].get_service_by_role('php')
+        svc = proj['app'].get_service_by_role('php')
         if svc:
             labels = self.engine.get_service_or_command_image_labels(svc)
             if labels is not None and VERSION_LABEL in labels and labels[VERSION_LABEL] in VERSION_VALID:
                 return labels[VERSION_LABEL]
         # 3. In service/cmd env:
-        for obj in list(config['project']['app']['services'].values()) + list(config['project']['app']['commands'].values()):
+        for obj in list(proj['app']['services'].values()) + list(proj['app']['commands'].values()):
             obj: Union[Service, Command]
             env = obj.collect_environment()
             if VERSION_ENV in env and env[VERSION_ENV] in VERSION_VALID:
