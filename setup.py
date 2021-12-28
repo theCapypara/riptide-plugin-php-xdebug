@@ -1,4 +1,4 @@
-__version__ = '0.6.0'
+__version__ = '0.7.0'
 from setuptools import setup, find_packages
 
 # README read-in
@@ -19,8 +19,8 @@ setup(
     author='Marco "Parakoopa" Köpcke',
     license='MIT',
     install_requires=[
-        'riptide-lib >= 0.6, < 0.7',
-        'riptide-cli >= 0.6, < 0.7',
+        'riptide-lib >= 0.7, < 0.8',
+        'riptide-cli >= 0.7, < 0.8',
         'Click >= 7.0',
     ],
     classifiers=[
