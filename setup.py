@@ -15,8 +15,8 @@ setup(
     description='Tool to manage development environments for web applications using containers - PHP Xdebug integration',
     long_description=long_description,
     long_description_content_type='text/x-rst',
-    url='https://github.com/Parakoopa/riptide-plugin-php-xdebug/',
-    author='Marco "Parakoopa" Köpcke',
+    url='https://github.com/theCapypara/riptide-plugin-php-xdebug/',
+    author='Marco "theCapypara" Köpcke',
     license='MIT',
     install_requires=[
         'riptide-lib >= 0.7, < 0.8',
