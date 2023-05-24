@@ -32,7 +32,7 @@
 
 |build| |docs| |pypi-version| |pypi-downloads| |pypi-license| |pypi-pyversions|
 
-.. |build| image:: https://img.shields.io/github/actions/workflow/status/theCapypara/riptide-plugin-php-xdebug/build-test-publish.yml
+.. |build| image:: https://img.shields.io/github/actions/workflow/status/theCapypara/riptide-plugin-php-xdebug/build.yml
     :target: https://github.com/theCapypara/riptide-plugin-php-xdebug/actions
     :alt: Build Status
 
