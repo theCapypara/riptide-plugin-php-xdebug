@@ -1,4 +1,4 @@
-__version__ = '0.7.0'
+__version__ = '0.8.0b1'
 from setuptools import setup, find_packages
 
 # README read-in
@@ -19,8 +19,8 @@ setup(
     author='Marco "theCapypara" Köpcke',
     license='MIT',
     install_requires=[
-        'riptide-lib >= 0.7, < 0.8',
-        'riptide-cli >= 0.7, < 0.8',
+        'riptide-lib >= 0.8.0b1, < 0.9',
+        'riptide-cli >= 0.8.0b1, < 0.9',
         'Click >= 7.0',
     ],
     classifiers=[
@@ -28,11 +28,10 @@ setup(
         'Programming Language :: Python',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
     ],
     entry_points='''
         [riptide.plugin]
