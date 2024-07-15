@@ -21,7 +21,7 @@ setup(
     install_requires=[
         'riptide-lib >= 0.8.0, < 0.9',
         'riptide-cli >= 0.8.0, < 0.9',
-        'Click >= 7.0, < 8.0',
+        'Click >= 7.0, < 9.0',
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',
