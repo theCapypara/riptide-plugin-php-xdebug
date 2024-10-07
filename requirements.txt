@@ -1,3 +1,3 @@
 Click==8.1.7
-riptide-lib >= 0.8.0b1, < 0.9
+riptide-lib >= 0.8.0b1, < 0.10
 riptide-cli >= 0.8.0b1, < 0.9
