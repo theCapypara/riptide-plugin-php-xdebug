@@ -1,16 +1,17 @@
+from __future__ import annotations
+
 import json
 import os
-from typing import Dict, TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Any, Final, TypedDict, cast
 
 import click
-from click import style, echo
-
+from click import echo, style
 from riptide.config.document.command import Command
 from riptide.config.document.service import Service
 from riptide.config.files import get_project_meta_folder
 from riptide.plugin.abstract import AbstractPlugin
 from riptide.util import SystemFlag
-from riptide_cli.helpers import cli_section, async_command, warn, RiptideCliError
+from riptide_cli.helpers import RiptideCliError, async_command, cli_section, warn
 
 if TYPE_CHECKING:
     from riptide.config.document.config import Config
@@ -19,29 +20,37 @@ if TYPE_CHECKING:
 
 CMD_XDEBUG = "xdebug"
 
-ENABLED_FLAG_NAME = "enabled"
-XDEBUG3_FLAG_NAME = "xdebug3"
-MODE_FLAG_NAME = "mode"
-REQUEST_TRIGGER_FLAG_NAME = "request_trigger"
-PARAMETERS_FLAG_NAME = "parameters"
+ENABLED_FLAG_NAME: Final = "enabled"
+XDEBUG3_FLAG_NAME: Final = "xdebug3"
+MODE_FLAG_NAME: Final = "mode"
+REQUEST_TRIGGER_FLAG_NAME: Final = "request_trigger"
+PARAMETERS_FLAG_NAME: Final = "parameters"
 
-XDEBUG_PLUGIN_STATE_FILE = ".xdebug.json"
-VERSION_ENV = "RIPTIDE_XDEBUG_VERSION"
-VERSION_LABEL = "php_xdebug_version"
-VERSION_VALID = ("2", "3")
-WARNING_URL = "https://github.com/theCapypara/riptide-plugin-php-xdebug#xdebug-version"
+XDEBUG_PLUGIN_STATE_FILE: Final = ".xdebug.json"
+VERSION_ENV: Final = "RIPTIDE_XDEBUG_VERSION"
+VERSION_LABEL: Final = "php_xdebug_version"
+VERSION_VALID: Final = ("2", "3")
+WARNING_URL: Final = "https://github.com/theCapypara/riptide-plugin-php-xdebug#xdebug-version"
+
+
+class PluginState(TypedDict):
+    enabled: str
+    xdebug3: bool
+    mode: str
+    request_trigger: bool
+    parameters: dict[str, str]
 
 
 class PhpXdebugPlugin(AbstractPlugin):
     def __init__(self):
-        self.engine: AbstractEngine = None
-        self._cached_xdebug_version = None
+        self.engine: AbstractEngine | None = None
+        self._cached_xdebug_version: int | None = None
 
-    def after_load_engine(self, engine: "AbstractEngine"):
+    def after_load_engine(self, engine: AbstractEngine):
         self.engine = engine
 
     def after_load_cli(self, main_cli_object):
-        from riptide_cli.command import interrupt_handler
+        from riptide_cli.helpers import interrupt_handler
 
         @cli_section("PHP")
         @main_cli_object.command(CMD_XDEBUG)
@@ -76,8 +85,13 @@ class PhpXdebugPlugin(AbstractPlugin):
             default PHP service from the Riptide repository is correctly configured to use this.
 
             """
-            from riptide_cli.loader import cmd_constraint_project_loaded, load_riptide_core
+            assert self.engine is not None
+
             from riptide_cli.lifecycle import start_project, stop_project
+            from riptide_cli.loader import (
+                cmd_constraint_project_loaded,
+                load_riptide_core,
+            )
 
             load_riptide_core(ctx)
             cmd_constraint_project_loaded(ctx)
@@ -139,11 +153,11 @@ class PhpXdebugPlugin(AbstractPlugin):
             echo(f"Extra configuration: {config_str.rstrip(',')}")
             echo(f"Request trigger: {trigger_str} (xdebug.start_with_request={trigger_str_start_with_request})")
 
-    def after_reload_config(self, config: "Config"):
+    def after_reload_config(self, config: Config):
         # Nothing to do. We work solely with flags.
         pass
 
-    def get_flag_value(self, config: "Config", flag_name: str) -> any:
+    def get_flag_value(self, config: Config, flag_name: str) -> Any:
         if not config.internal_contains("project"):
             return False
         if flag_name == XDEBUG3_FLAG_NAME:
@@ -151,14 +165,15 @@ class PhpXdebugPlugin(AbstractPlugin):
         else:
             state = self.get_state(config.internal_get("project"))
             if flag_name in state:
-                return state[flag_name]
+                return state[flag_name]  # type: ignore
         return False
 
-    def get_state(self, project: "Project") -> Dict:
+    def get_state(self, project: Project) -> PluginState:
+        s: PluginState
         if not os.path.exists(self._get_configuration_path(project)):
-            s = {ENABLED_FLAG_NAME: False}
+            s = {ENABLED_FLAG_NAME: False}  # type: ignore
         else:
-            with open(self._get_configuration_path(project), "r") as fp:
+            with open(self._get_configuration_path(project)) as fp:
                 s = json.load(fp)
         # For backwards compatibility we check these extra:
         if MODE_FLAG_NAME not in s:
@@ -169,16 +184,16 @@ class PhpXdebugPlugin(AbstractPlugin):
             s[PARAMETERS_FLAG_NAME] = {}
         return s
 
-    def _update_flag(self, project: "Project", new_flag, flag_name=ENABLED_FLAG_NAME):
+    def _update_flag(self, project: Project, new_flag, flag_name=ENABLED_FLAG_NAME):
         state = self.get_state(project)
-        state[flag_name] = new_flag
+        state[flag_name] = new_flag  # type: ignore
         with open(self._get_configuration_path(project), "w") as fp:
             return json.dump(state, fp)
 
-    def _get_configuration_path(self, project: "Project"):
+    def _get_configuration_path(self, project: Project):
         return os.path.join(get_project_meta_folder(project.folder()), XDEBUG_PLUGIN_STATE_FILE)
 
-    def get_xdebug_version(self, config: "Config"):
+    def get_xdebug_version(self, config: Config):
         if not self.engine:
             raise ValueError("Tried to get the Xdebug version before the engine backend was initialized.")
         if self._cached_xdebug_version is None:
@@ -189,7 +204,9 @@ class PhpXdebugPlugin(AbstractPlugin):
             self._cached_xdebug_version = version if version is not None else 2
         return self._cached_xdebug_version
 
-    def _detect_xdebug_version(self, config: "Config"):
+    def _detect_xdebug_version(self, config: Config):
+        assert self.engine is not None
+
         # 1. In env:
         if VERSION_ENV in os.environ and os.environ[VERSION_ENV] in VERSION_VALID:
             return os.environ[VERSION_ENV]
@@ -202,7 +219,7 @@ class PhpXdebugPlugin(AbstractPlugin):
                 return labels[VERSION_LABEL]
         # 3. In service/cmd env:
         for obj in list(proj["app"]["services"].values()) + list(proj["app"]["commands"].values()):
-            obj: Union[Service, Command]
+            obj = cast(Service | Command, obj)
             env = obj.collect_environment()
             if VERSION_ENV in env and env[VERSION_ENV] in VERSION_VALID:
                 return env[VERSION_ENV]
