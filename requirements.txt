@@ -1,5 +1,3 @@
-Click==8.2.1
 riptide-lib >= 0.10, < 0.11
 riptide-cli >= 0.10, < 0.11
-ruff
-mypy
+-r requirements_base.txt
