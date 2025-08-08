@@ -85,8 +85,6 @@ class PhpXdebugPlugin(AbstractPlugin):
             default PHP service from the Riptide repository is correctly configured to use this.
 
             """
-            assert self.engine is not None
-
             from riptide_cli.lifecycle import start_project, stop_project
             from riptide_cli.loader import (
                 cmd_constraint_project_loaded,
@@ -96,6 +94,8 @@ class PhpXdebugPlugin(AbstractPlugin):
             load_riptide_core(ctx)
             cmd_constraint_project_loaded(ctx)
             version = self.get_xdebug_version(ctx.system_config)  # Mainly do this, to show the warning if needed.
+
+            assert self.engine is not None
 
             if mode is not None:
                 self._update_flag(ctx.system_config["project"], mode, MODE_FLAG_NAME)
