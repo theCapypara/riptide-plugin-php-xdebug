@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Any, Final, TypedDict, cast
 
 import click
 from click import echo, style
+from rich import Console
 from riptide.config.document.command import Command
 from riptide.config.document.service import Service
 from riptide.config.files import get_project_meta_folder
@@ -93,7 +94,7 @@ class PhpXdebugPlugin(AbstractPlugin):
 
             load_riptide_core(ctx)
             cmd_constraint_project_loaded(ctx)
-            version = self.get_xdebug_version(ctx.system_config)  # Mainly do this, to show the warning if needed.
+            version = self.get_xdebug_version(ctx)  # Mainly do this, to show the warning if needed.
 
             assert self.engine is not None
 
@@ -200,7 +201,7 @@ class PhpXdebugPlugin(AbstractPlugin):
             version = self._detect_xdebug_version(config)
             if not version:
                 if SystemFlag.IS_CLI:
-                    warn(f"Could not reliably detect the XDebug version. Please see: {WARNING_URL}")
+                    warn(Console(), f"Could not reliably detect the XDebug version. Please see: {WARNING_URL}")
             self._cached_xdebug_version = version if version is not None else 2
         return self._cached_xdebug_version
 

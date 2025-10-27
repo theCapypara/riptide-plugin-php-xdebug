@@ -26,6 +26,7 @@ dependencies = [
     "riptide-lib >= 0.10, < 0.11",
     "riptide-cli >= 0.10, < 0.11",
     "Click >= 8.2, < 9.0",
+    "rich >= 14.1, < 15.0",
 ]
 
 [project.urls]
