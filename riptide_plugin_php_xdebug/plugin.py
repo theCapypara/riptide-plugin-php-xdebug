@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Any, Final, TypedDict, cast
 
 import click
 from click import echo, style
-from rich import Console
+from rich.console import Console
 from riptide.config.document.command import Command
 from riptide.config.document.service import Service
 from riptide.config.files import get_project_meta_folder
