@@ -94,7 +94,7 @@ class PhpXdebugPlugin(AbstractPlugin):
 
             load_riptide_core(ctx)
             cmd_constraint_project_loaded(ctx)
-            version = self.get_xdebug_version(ctx)  # Mainly do this, to show the warning if needed.
+            version = self.get_xdebug_version(ctx.system_config)  # Mainly do this, to show the warning if needed.
 
             assert self.engine is not None
 
